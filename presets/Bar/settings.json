@@ -20,7 +20,7 @@
       "normal": {
         "enabled": true,
         "backgroundColor": { "enabled": false },
-        "foregroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 1 },
+        "foregroundColor": { "enabled": true, "sourceType": 1, "systemColor": "textColor", "systemColorSet": "Window", "alpha": 1 },
         "radius": { "enabled": true, "corner": { "topLeft": 16, "topRight": 16, "bottomRight": 16, "bottomLeft": 16 } },
         "margin": { "enabled": true, "side": { "left": 10, "right": 10, "top": 5, "bottom": 5 } },
         "spacing": 8,
@@ -30,8 +30,8 @@
       },
       "hovered": {
         "enabled": true,
-        "backgroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 0.12 },
-        "foregroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 1 },
+        "backgroundColor": { "enabled": true, "sourceType": 1, "systemColor": "textColor", "systemColorSet": "Window", "alpha": 0.12 },
+        "foregroundColor": { "enabled": true, "sourceType": 1, "systemColor": "textColor", "systemColorSet": "Window", "alpha": 1 },
         "radius": { "enabled": true, "corner": { "topLeft": 16, "topRight": 16, "bottomRight": 16, "bottomLeft": 16 } },
         "margin": { "enabled": true, "side": { "left": 10, "right": 10, "top": 5, "bottom": 5 } },
         "spacing": 8,
@@ -41,8 +41,8 @@
       },
       "expanded": {
         "enabled": true,
-        "backgroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 0.2 },
-        "foregroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 1 },
+        "backgroundColor": { "enabled": true, "sourceType": 1, "systemColor": "textColor", "systemColorSet": "Window", "alpha": 0.2 },
+        "foregroundColor": { "enabled": true, "sourceType": 1, "systemColor": "textColor", "systemColorSet": "Window", "alpha": 1 },
         "radius": { "enabled": true, "corner": { "topLeft": 16, "topRight": 16, "bottomRight": 16, "bottomLeft": 16 } },
         "margin": { "enabled": true, "side": { "left": 10, "right": 10, "top": 5, "bottom": 5 } },
         "spacing": 8,
@@ -55,7 +55,7 @@
       "normal": {
         "enabled": true,
         "backgroundColor": { "enabled": false },
-        "foregroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 1 }
+        "foregroundColor": { "enabled": true, "sourceType": 1, "systemColor": "textColor", "systemColorSet": "Window", "alpha": 1 }
       }
     },
     "stockPanelSettings": { "thickness": { "enabled": true, "value": 30 } },

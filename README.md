@@ -11,11 +11,11 @@ light. Maximize a window and the bar goes flat and solid, out of the way.
 
 1. Install Panel Colorizer, with its C++ plugin.
 2. Build my fork of the Glass KWin effect. Log out and in.
-3. Copy two presets, run one script.
+3. Copy two presets, run two scripts.
 
 Needs `sudo` once, for the effect. Undo is four commands, at the bottom.
 
-Tested on Plasma 6.6.6, Wayland, display scale 2.5.
+Tested on Plasma 6.6.6, Wayland, display scale 2 and 2.5.
 
 ## Parts
 
@@ -24,6 +24,7 @@ Tested on Plasma 6.6.6, Wayland, display scale 2.5.
 | [Panel Colorizer](https://github.com/luisbocanegra/plasma-panel-colorizer) | Cuts the panel into pills and tells KWin which areas to blur |
 | [kwin-effects-glass, `per-pill-glass` branch](https://github.com/Nael-Nathanael/kwin-effects-glass/tree/per-pill-glass) | Draws the glass: bend, rim, blur |
 | `presets/` | Panel Colorizer presets: `Bubbles` (pills) and `Bar` (maximized) |
+| `setup-panel.sh` | Builds the top bar, sets the clock, wires preset auto-loading. `--dock` adds a dock |
 | `glass-settings.sh` | The Glass effect settings |
 
 The fork is needed. Upstream draws one glass shape around the whole panel, so
@@ -58,9 +59,20 @@ Do these in order.
    cp -r plasma-liquid-glass/presets/* ~/.config/panel-colorizer/presets/
    ```
 
-5. Add the Panel Colorizer widget to your top panel. In its settings:
-   - Presets → load `Bubbles`.
-   - Preset auto-loading → *Maximized window*: `Bar`, *Normal*: `Bubbles`.
+5. Build the bar:
+
+   ```
+   sh plasma-liquid-glass/setup-panel.sh          # top bar
+   sh plasma-liquid-glass/setup-panel.sh --dock   # top bar and a glass dock
+   ```
+
+   It reuses your top panel if you have one, else makes one. It adds Panel
+   Colorizer (hidden, or its icon becomes one more pill), loads `Bubbles`, and
+   sets auto-loading: *Maximized window* → `Bar`, *Normal* → `Bubbles`. It sets
+   the clock to one line, `20 Sep 12:24`. Safe to run again.
+
+   By hand instead: add the Panel Colorizer widget to the panel, then in its
+   settings load `Bubbles` and set the same auto-loading.
 
 6. Apply the Glass settings:
 
@@ -70,6 +82,21 @@ Do these in order.
 
 The `Bubbles` preset hides the panel's own background (`nativePanel` opacity 0).
 Glass needs the wallpaper behind the pills, not a panel fill.
+
+`Bar` is the opposite: the panel's own background, and text in the system text
+colour. So it reads on a light theme and on a dark one. `Bubbles` keeps white
+text, because it sits on the wallpaper, not on the theme.
+
+### The clock is the wrong size
+
+The Digital Clock does not use the panel font. It has its own size, and it shrinks
+the text to fit the pill, so the number is not points or pixels. `setup-panel.sh`
+sets 17, which matches a 10pt panel font at display scale 2. Too big or too small
+next to the other pills? Run it again with another number:
+
+```
+CLOCK_FONT_SIZE=15 sh plasma-liquid-glass/setup-panel.sh
+```
 
 ## Check that Glass is drawing
 
