@@ -1,0 +1,66 @@
+{
+  "globalSettings": {
+    "configurationOverrides": {
+      "overrides": {},
+      "associations": []
+    },
+    "panel": {
+      "normal": {
+        "enabled": true,
+        "backgroundColor": { "enabled": false },
+        "margin": { "enabled": true, "side": { "left": 0, "right": 0, "top": 0, "bottom": 0 } },
+        "padding": { "enabled": false },
+        "radius": { "enabled": false },
+        "border": { "enabled": false, "width": 0 },
+        "borderSecondary": { "enabled": false, "width": 0 },
+        "shadow": { "background": { "enabled": false }, "foreground": { "enabled": false } }
+      }
+    },
+    "widgets": {
+      "normal": {
+        "enabled": true,
+        "backgroundColor": { "enabled": false },
+        "foregroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 1 },
+        "radius": { "enabled": true, "corner": { "topLeft": 16, "topRight": 16, "bottomRight": 16, "bottomLeft": 16 } },
+        "margin": { "enabled": true, "side": { "left": 10, "right": 10, "top": 5, "bottom": 5 } },
+        "spacing": 8,
+        "border": { "enabled": false, "width": 0 },
+        "borderSecondary": { "enabled": false, "width": 0 },
+        "shadow": { "background": { "enabled": false }, "foreground": { "enabled": false } }
+      },
+      "hovered": {
+        "enabled": true,
+        "backgroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 0.12 },
+        "foregroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 1 },
+        "radius": { "enabled": true, "corner": { "topLeft": 16, "topRight": 16, "bottomRight": 16, "bottomLeft": 16 } },
+        "margin": { "enabled": true, "side": { "left": 10, "right": 10, "top": 5, "bottom": 5 } },
+        "spacing": 8,
+        "border": { "enabled": false, "width": 0 },
+        "borderSecondary": { "enabled": false, "width": 0 },
+        "shadow": { "background": { "enabled": false }, "foreground": { "enabled": false } }
+      },
+      "expanded": {
+        "enabled": true,
+        "backgroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 0.2 },
+        "foregroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 1 },
+        "radius": { "enabled": true, "corner": { "topLeft": 16, "topRight": 16, "bottomRight": 16, "bottomLeft": 16 } },
+        "margin": { "enabled": true, "side": { "left": 10, "right": 10, "top": 5, "bottom": 5 } },
+        "spacing": 8,
+        "border": { "enabled": false, "width": 0 },
+        "borderSecondary": { "enabled": false, "width": 0 },
+        "shadow": { "background": { "enabled": false }, "foreground": { "enabled": false } }
+      }
+    },
+    "trayWidgets": {
+      "normal": {
+        "enabled": true,
+        "backgroundColor": { "enabled": false },
+        "foregroundColor": { "enabled": true, "sourceType": 0, "custom": "#ffffff", "alpha": 1 }
+      }
+    },
+    "stockPanelSettings": { "thickness": { "enabled": true, "value": 30 } },
+    "nativePanel": {
+      "background": { "enabled": true, "opacity": 1, "shadow": true }
+    }
+  }
+}

@@ -1,0 +1,270 @@
+{
+  "globalSettings": {
+    "configurationOverrides": {
+      "overrides": {},
+      "associations": []
+    },
+    "panel": {
+      "normal": {
+        "enabled": true,
+        "backgroundColor": {
+          "enabled": false
+        },
+        "margin": {
+          "enabled": true,
+          "side": {
+            "left": 0,
+            "right": 0,
+            "top": 6,
+            "bottom": 6
+          }
+        }
+      }
+    },
+    "widgets": {
+      "normal": {
+        "enabled": true,
+        "backgroundColor": {
+          "enabled": true,
+          "sourceType": 0,
+          "custom": "#000000",
+          "alpha": 0.18
+        },
+        "foregroundColor": {
+          "enabled": true,
+          "sourceType": 0,
+          "custom": "#ffffff",
+          "alpha": 1
+        },
+        "radius": {
+          "enabled": true,
+          "corner": {
+            "topLeft": 15,
+            "topRight": 15,
+            "bottomRight": 15,
+            "bottomLeft": 15
+          }
+        },
+        "margin": {
+          "enabled": true,
+          "side": {
+            "left": 10,
+            "right": 10,
+            "top": 3,
+            "bottom": 3
+          }
+        },
+        "spacing": 8,
+        "blurBehind": true,
+        "border": {
+          "enabled": false,
+          "width": 0,
+          "color": {
+            "enabled": true,
+            "sourceType": 0,
+            "custom": "#ffffff",
+            "alpha": 0.45
+          }
+        },
+        "borderSecondary": {
+          "enabled": false,
+          "width": 0,
+          "color": {
+            "enabled": true,
+            "sourceType": 0,
+            "custom": "#ffffff",
+            "alpha": 0.1
+          }
+        },
+        "shadow": {
+          "background": {
+            "enabled": false,
+            "size": 6,
+            "xOffset": 0,
+            "yOffset": 1,
+            "color": {
+              "enabled": true,
+              "sourceType": 0,
+              "custom": "#000000",
+              "alpha": 0.35
+            }
+          },
+          "foreground": {
+            "enabled": false
+          }
+        }
+      },
+      "hovered": {
+        "enabled": true,
+        "backgroundColor": {
+          "enabled": true,
+          "sourceType": 0,
+          "custom": "#000000",
+          "alpha": 0.65
+        },
+        "foregroundColor": {
+          "enabled": true,
+          "sourceType": 0,
+          "custom": "#ffffff",
+          "alpha": 1
+        },
+        "radius": {
+          "enabled": true,
+          "corner": {
+            "topLeft": 15,
+            "topRight": 15,
+            "bottomRight": 15,
+            "bottomLeft": 15
+          }
+        },
+        "margin": {
+          "enabled": true,
+          "side": {
+            "left": 10,
+            "right": 10,
+            "top": 3,
+            "bottom": 3
+          }
+        },
+        "spacing": 8,
+        "blurBehind": true,
+        "border": {
+          "enabled": false,
+          "width": 0,
+          "color": {
+            "enabled": true,
+            "sourceType": 0,
+            "custom": "#ffffff",
+            "alpha": 0.5
+          }
+        },
+        "borderSecondary": {
+          "enabled": false,
+          "width": 0,
+          "color": {
+            "enabled": true,
+            "sourceType": 0,
+            "custom": "#ffffff",
+            "alpha": 0.1
+          }
+        },
+        "shadow": {
+          "background": {
+            "enabled": false,
+            "size": 6,
+            "xOffset": 0,
+            "yOffset": 1,
+            "color": {
+              "enabled": true,
+              "sourceType": 0,
+              "custom": "#000000",
+              "alpha": 0.35
+            }
+          },
+          "foreground": {
+            "enabled": false
+          }
+        }
+      },
+      "expanded": {
+        "enabled": true,
+        "backgroundColor": {
+          "enabled": true,
+          "sourceType": 0,
+          "custom": "#000000",
+          "alpha": 0.75
+        },
+        "foregroundColor": {
+          "enabled": true,
+          "sourceType": 0,
+          "custom": "#ffffff",
+          "alpha": 1
+        },
+        "radius": {
+          "enabled": true,
+          "corner": {
+            "topLeft": 15,
+            "topRight": 15,
+            "bottomRight": 15,
+            "bottomLeft": 15
+          }
+        },
+        "margin": {
+          "enabled": true,
+          "side": {
+            "left": 10,
+            "right": 10,
+            "top": 3,
+            "bottom": 3
+          }
+        },
+        "spacing": 8,
+        "blurBehind": true,
+        "border": {
+          "enabled": false,
+          "width": 0,
+          "color": {
+            "enabled": true,
+            "sourceType": 0,
+            "custom": "#ffffff",
+            "alpha": 0.7
+          }
+        },
+        "borderSecondary": {
+          "enabled": false,
+          "width": 0,
+          "color": {
+            "enabled": true,
+            "sourceType": 0,
+            "custom": "#ffffff",
+            "alpha": 0.1
+          }
+        },
+        "shadow": {
+          "background": {
+            "enabled": false,
+            "size": 6,
+            "xOffset": 0,
+            "yOffset": 1,
+            "color": {
+              "enabled": true,
+              "sourceType": 0,
+              "custom": "#000000",
+              "alpha": 0.35
+            }
+          },
+          "foreground": {
+            "enabled": false
+          }
+        }
+      }
+    },
+    "trayWidgets": {
+      "normal": {
+        "enabled": true,
+        "backgroundColor": {
+          "enabled": false
+        },
+        "foregroundColor": {
+          "enabled": true,
+          "sourceType": 0,
+          "custom": "#ffffff",
+          "alpha": 1
+        }
+      }
+    },
+    "stockPanelSettings": {
+      "thickness": {
+        "enabled": true,
+        "value": 48
+      }
+    },
+    "nativePanel": {
+      "background": {
+        "enabled": true,
+        "opacity": 0,
+        "shadow": false
+      }
+    }
+  }
+}
