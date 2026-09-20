@@ -1,0 +1,13 @@
+{
+    "KPlugin": {
+        "Id": "glassbar-sampler",
+        "Name": "Glass Bar Sampler",
+        "Description": "Tells glassbar-sampler when the active window is maximized, and where it is.",
+        "Version": "1.0",
+        "License": "MIT",
+        "Authors": [{ "Name": "Nael Nathanael" }]
+    },
+    "KPackageStructure": "KWin/Script",
+    "X-Plasma-API": "javascript",
+    "X-Plasma-MainScript": "code/main.js"
+}

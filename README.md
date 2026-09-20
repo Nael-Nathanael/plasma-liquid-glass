@@ -27,6 +27,7 @@ Tested on Plasma 6.6.6, Wayland, display scale 2 and 2.5.
 | `setup-panel.sh` | Builds the top bar, sets the clock, wires preset auto-loading. `--dock` adds a dock |
 | [WhiteSur](https://github.com/vinceliuice/WhiteSur-kde), one file | The dock's running-app dot and rounded highlight. Fetched by `--dock`, not bundled |
 | `glass-settings.sh` | The Glass effect settings |
+| `sampler/` | Optional. Colours the maximized bar like the window's title bar |
 
 The fork is needed. Upstream draws one glass shape around the whole panel, so
 only the bar's outer edge bends. The branch draws one shape per pill, and ships
@@ -86,12 +87,56 @@ Do these in order.
    sh plasma-liquid-glass/glass-settings.sh
    ```
 
+7. Optional: make the maximized bar match the window under it.
+
+   ```
+   sh plasma-liquid-glass/sampler/install.sh
+   ```
+
+   See [The bar takes the window's colour](#the-bar-takes-the-windows-colour).
+
 The `Bubbles` preset hides the panel's own background (`nativePanel` opacity 0).
 Glass needs the wallpaper behind the pills, not a panel fill.
 
-`Bar` is the opposite: the panel's own background, and text in the system text
-colour. So it reads on a light theme and on a dark one. `Bubbles` keeps white
-text, because it sits on the wallpaper, not on the theme.
+`Bar` is the opposite: a flat, solid bar. Dark grey with white text as it ships.
+
+### The bar takes the window's colour
+
+With `sampler/` installed, the bar under a maximized window takes the colour of
+that window's title bar, so the two read as one surface. Text turns dark on a
+light title bar and white on a dark one.
+
+Panel Colorizer cannot do this: its colours come from a fixed value or from the
+system theme. Asking the window for its colour scheme does not work either. That
+is what Latte Dock did, and it only knows KDE apps. GTK and Electron apps draw
+their own title bar. So this looks at the pixels:
+
+- `sampler/kwin-script` tells the sampler when the active window is maximized,
+  and where it is. KWin scripts cannot read pixels.
+- `glassbar-sampler` reads a one pixel high strip across the top of the title bar,
+  takes the most common colour so the title text does not count, writes it into
+  the `Bar` preset in `~/.config`, and has Panel Colorizer load the preset again.
+
+KWin only lets a program read the screen if a `.desktop` file for that exact
+program lists `org.kde.KWin.ScreenShot2`. The installer writes that file to
+`~/.local/share/applications`, for `~/.local/bin/glassbar-sampler` alone. That is
+why the sampler is a small compiled program and not a script: a script would
+need the permission given to all of Python. No `sudo`.
+
+Limits: it looks when a window is maximized or activated, not all the time, so
+an app that changes its title bar colour later keeps the old bar until then. One
+monitor has been tested. If you rebuild the top panel, run `install.sh` again:
+the panel's ids are in the sampler's start command.
+
+To remove it:
+
+```
+pkill -f glassbar-sampler
+rm ~/.config/autostart/io.github.naelnathanael.glassbar-sampler.desktop \
+   ~/.local/share/applications/io.github.naelnathanael.glassbar-sampler.desktop \
+   ~/.local/bin/glassbar-sampler
+kpackagetool6 -t KWin/Script -r glassbar-sampler
+```
 
 ### What `--dock` changes outside the panel
 
