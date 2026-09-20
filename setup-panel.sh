@@ -2,8 +2,10 @@
 # Build the glass top bar, and optionally a dock. Run inside a Plasma 6 session,
 # after the presets are copied to ~/.config/panel-colorizer/presets.
 #
-#   sh setup-panel.sh          top bar only
-#   sh setup-panel.sh --dock   top bar and a glass dock at the bottom
+#   sh setup-panel.sh            top bar only
+#   sh setup-panel.sh --dock     and a glass dock at the bottom
+#   sh setup-panel.sh --popups   and rounded, frosted notifications and tray popups
+#   sh setup-panel.sh --dock --popups
 #
 # Safe to re-run: panels that already exist are reused, not duplicated, and the
 # dock's pinned apps are only set when the dock is first made.
@@ -13,12 +15,19 @@
 # scale 2. If the clock looks bigger or smaller than its neighbours, change it:
 #   CLOCK_FONT_SIZE=15 sh setup-panel.sh
 #
-# DOCK_VARIANT: WhiteSurLiquid (dark dot) or WhiteSurLiquid-dark (light dot).
+# WHITESUR_VARIANT: WhiteSurLiquid (for a light colour scheme) or WhiteSurLiquid-dark.
 # Picked from your colour scheme when unset.
 set -e
 
 DOCK=false
-[ "${1:-}" = "--dock" ] && DOCK=true
+POPUPS=false
+for arg in "$@"; do
+    case "$arg" in
+        --dock) DOCK=true ;;
+        --popups) POPUPS=true ;;
+        *) echo "unknown option: $arg" >&2; exit 2 ;;
+    esac
+done
 CLOCK_FONT_SIZE=${CLOCK_FONT_SIZE:-17}
 PRESETS="$HOME/.config/panel-colorizer/presets"
 WHITESUR=https://raw.githubusercontent.com/vinceliuice/WhiteSur-kde/master/plasma/desktoptheme
@@ -34,38 +43,58 @@ for p in $need; do
 done
 qdbus=$(command -v qdbus6 || command -v qdbus-qt6 || command -v qdbus) || { echo "No qdbus found." >&2; exit 1; }
 
-# The dock's running-app dot and rounded highlight come from WhiteSur's tasks.svgz.
-# A Plasma style that holds only that one file falls back to Breeze for the rest,
-# so nothing else on the desktop changes. WhiteSur is GPL-3.0: fetched, not bundled.
-if $DOCK; then
-    if [ -z "${DOCK_VARIANT:-}" ]; then
-        case "$(kreadconfig6 --file kdeglobals --group General --key ColorScheme)" in
-            *[Dd]ark*) DOCK_VARIANT=WhiteSurLiquid-dark ;;
-            *) DOCK_VARIANT=WhiteSurLiquid ;;
-        esac
+# The dock's running-app dot and the popups' rounded shape are drawn by the Plasma
+# style, and a style is global. So build a style that holds only the WhiteSur files
+# needed: Plasma takes everything a style lacks from Breeze, and nothing else on the
+# desktop changes. WhiteSur is GPL-3.0: fetched, not bundled. Files from an earlier
+# run stay, so --dock today and --popups tomorrow add up.
+if $DOCK || $POPUPS; then
+    dark=false
+    case "$(kreadconfig6 --file kdeglobals --group General --key ColorScheme)" in *[Dd]ark*) dark=true ;; esac
+    if [ -z "${WHITESUR_VARIANT:-}" ]; then
+        WHITESUR_VARIANT=WhiteSurLiquid
+        $dark && WHITESUR_VARIANT=WhiteSurLiquid-dark
     fi
-    style="$HOME/.local/share/plasma/desktoptheme/WhiteSurDock"
-    mkdir -p "$style/widgets"
-    curl -fsSL "$WHITESUR/$DOCK_VARIANT/widgets/tasks.svgz" -o "$style/widgets/tasks.svgz"
+    style="$HOME/.local/share/plasma/desktoptheme/WhiteSurParts"
+    files=""
+    $DOCK && files="widgets/tasks.svgz"
+    $POPUPS && files="$files dialogs/background.svgz solid/dialogs/background.svgz widgets/plasmoidheading.svgz"
+    for f in $files; do
+        mkdir -p "$style/$(dirname "$f")"
+        curl -fsSL "$WHITESUR/$WHITESUR_VARIANT/$f" -o "$style/$f"
+    done
     cat >"$style/metadata.json" <<'EOF'
 {
     "KPlugin": {
         "Authors": [ { "Name": "Vince Liuice (WhiteSur)" } ],
         "Category": "Plasma 6.0 theme",
-        "Description": "Breeze, with the task indicators from WhiteSur Liquid",
-        "Id": "WhiteSurDock",
+        "Description": "Breeze, with a few parts from WhiteSur Liquid",
+        "Id": "WhiteSurParts",
         "License": "GPL-3.0",
-        "Name": "WhiteSur Dock",
+        "Name": "WhiteSur Parts",
         "Version": "1.0",
         "Website": "https://github.com/vinceliuice/WhiteSur-kde"
     },
     "X-Plasma-API": "5.0"
 }
 EOF
-    plasma-apply-desktoptheme WhiteSurDock >/dev/null
+    plasma-apply-desktoptheme default >/dev/null    # drops the cached copy of the style
+    plasma-apply-desktoptheme WhiteSurParts >/dev/null
 fi
 
-# Prints one "<preset> <panel id> <colorizer widget id>" line per panel.
+# WhiteSur's popup background is clear glass, and text on clear glass is hard to read
+# over a dark window. A milky tint gives the frosted look. ExcludeDocks keeps the tint
+# off panels, so the pills and the dock stay clear.
+if $POPUPS; then
+    tint='#a6f5f5f7'
+    $dark && tint='#a61e1e1e'
+    kwriteconfig6 --file kwinrc --group Effect-blurplus --key TintColor "$tint"
+    kwriteconfig6 --file kwinrc --group Effect-blurplus --key ExcludeDocks true
+    kwriteconfig6 --file plasmanotifyrc --group Notifications --key PopupPosition TopRight
+    "$qdbus" org.kde.KWin /Effects org.kde.kwin.Effects.reconfigureEffect glass >/dev/null 2>&1 || true
+fi
+
+# Prints one "<preset> <panel id> <colorizer widget id>" line per Panel Colorizer it adds.
 made=$("$qdbus" org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "
 var COLORIZER = 'luisbocanegra.panel.colorizer';
 var PRESETS = '$PRESETS';
@@ -81,14 +110,18 @@ function panelAt(location) {
     return hit;
 }
 function colorizer(panel, preset, autoload) {
-    var c = find(panel, COLORIZER) || panel.addWidget(COLORIZER);
+    var c = find(panel, COLORIZER);
+    var added = !c;
+    if (added) c = panel.addWidget(COLORIZER);
     autoload.enabled = true;
     autoload.filterByScreen = true;
     c.currentConfigGroup = ['General'];
     c.writeConfig('hideWidget', true);   // else its icon shows up as one more pill
     c.writeConfig('presetAutoloading', JSON.stringify(autoload));
     c.reloadConfig();
-    print(preset + ' ' + panel.id + ' ' + c.id + '\n');
+    // One that was already there follows auto-loading. Forcing a preset on it
+    // would put Bubbles under a window that is maximized right now.
+    if (added) print(preset + ' ' + panel.id + ' ' + c.id + '\n');
 }
 
 var top = panelAt('top');
@@ -137,8 +170,8 @@ if ($DOCK) {
 }
 ")
 
-# Auto-loading only switches presets when the panel state changes, so load once now.
-# A widget added a moment ago needs a second before its D-Bus name is up.
+# Auto-loading only switches presets when the panel state changes, so a new widget
+# gets its preset loaded once by hand. It needs a second before its D-Bus name is up.
 echo "$made" | while read -r preset panel widget; do
     [ -n "$widget" ] || continue
     name="luisbocanegra.panel.colorizer.c$panel.w$widget"

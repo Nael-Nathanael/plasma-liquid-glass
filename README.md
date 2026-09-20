@@ -24,8 +24,8 @@ Tested on Plasma 6.6.6, Wayland, display scale 2 and 2.5.
 | [Panel Colorizer](https://github.com/luisbocanegra/plasma-panel-colorizer) | Cuts the panel into pills and tells KWin which areas to blur |
 | [kwin-effects-glass, `per-pill-glass` branch](https://github.com/Nael-Nathanael/kwin-effects-glass/tree/per-pill-glass) | Draws the glass: bend, rim, blur |
 | `presets/` | Panel Colorizer presets: `Bubbles` (pills), `Bar` (maximized), `Dock` (one slab) |
-| `setup-panel.sh` | Builds the top bar, sets the clock, wires preset auto-loading. `--dock` adds a dock |
-| [WhiteSur](https://github.com/vinceliuice/WhiteSur-kde), one file | The dock's running-app dot and rounded highlight. Fetched by `--dock`, not bundled |
+| `setup-panel.sh` | Builds the top bar, sets the clock, wires preset auto-loading. `--dock` adds a dock, `--popups` restyles notifications |
+| [WhiteSur](https://github.com/vinceliuice/WhiteSur-kde), a few files | The dock's running-app dot, the popups' rounded shape. Fetched by `--dock` and `--popups`, not bundled |
 | `glass-settings.sh` | The Glass effect settings |
 | `sampler/` | Optional. Colours the maximized bar like the window's title bar |
 
@@ -66,6 +66,7 @@ Do these in order.
    ```
    sh plasma-liquid-glass/setup-panel.sh          # top bar
    sh plasma-liquid-glass/setup-panel.sh --dock   # top bar and a glass dock
+   sh plasma-liquid-glass/setup-panel.sh --dock --popups   # and frosted notifications
    ```
 
    It reuses your top panel if you have one, else makes one. It adds Panel
@@ -77,6 +78,9 @@ Do these in order.
    icons, centered, floating, moves out of a window's way. It gets the `Dock`
    preset, the same glass as the pills but as one slab. Your pinned apps are set
    once, when the dock is made, and left alone after that.
+
+   `--popups` makes notifications, and the tray's popups with them, rounded
+   frosted glass, and puts notifications top right.
 
    By hand instead: add the Panel Colorizer widget to the panel, then in its
    settings load `Bubbles` and set the same auto-loading.
@@ -138,16 +142,28 @@ rm ~/.config/autostart/io.github.naelnathanael.glassbar-sampler.desktop \
 kpackagetool6 -t KWin/Script -r glassbar-sampler
 ```
 
-### What `--dock` changes outside the panel
+### What `--dock` and `--popups` change outside the panel
 
-Plasma draws the square highlight behind the active app from the Plasma style,
-and a style is global. `--dock` makes a style named `WhiteSur Dock` with one file
-in it, WhiteSur's `tasks.svgz`, and switches to it. Plasma takes every file a
-style does not have from Breeze, so the dot and the rounded highlight are the
-only things that change. It needs `curl` and a network connection, once.
+Plasma draws the highlight behind the active app, and the background of every
+popup, from the Plasma style, and a style is global. The script makes a style
+named `WhiteSur Parts` with only the WhiteSur files it needs, and switches to it.
+Plasma takes every file a style does not have from Breeze, so nothing else
+changes. It needs `curl` and a network connection.
 
-The dot is dark on a light colour scheme and light on a dark one. To force it:
-`DOCK_VARIANT=WhiteSurLiquid-dark sh plasma-liquid-glass/setup-panel.sh --dock`.
+| Flag | Files | What you see |
+| --- | --- | --- |
+| `--dock` | `widgets/tasks.svgz` | A dot under running apps, a rounded highlight |
+| `--popups` | `dialogs/background.svgz`, `widgets/plasmoidheading.svgz` | Rounded glass notifications and tray popups |
+
+WhiteSur's popup background is clear glass, and text on clear glass is hard to
+read over a dark window. So `--popups` also sets a milky `TintColor` in the Glass
+effect, with `ExcludeDocks` so the pills and the dock stay clear. A style cannot
+tell a notification from a tray popup, so both change. What stays Plasma's: the
+strip with the app name, the timeout line, the icon on the right. Those are the
+notification widget's layout, not the style.
+
+Light or dark follows your colour scheme. To force it:
+`WHITESUR_VARIANT=WhiteSurLiquid-dark sh plasma-liquid-glass/setup-panel.sh --dock --popups`.
 
 ### Taking Panel Colorizer off a panel
 
@@ -211,11 +227,13 @@ qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect glass
 qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect blur
 ```
 
-If you used `--dock`, go back to the Breeze style too:
+If you used `--dock` or `--popups`, go back to the Breeze style too:
 
 ```
 plasma-apply-desktoptheme default
-rm -r ~/.local/share/plasma/desktoptheme/WhiteSurDock
+rm -r ~/.local/share/plasma/desktoptheme/WhiteSurParts
+kwriteconfig6 --file kwinrc --group Effect-blurplus --key TintColor --delete
+kwriteconfig6 --file kwinrc --group Effect-blurplus --key ExcludeDocks --delete
 ```
 
 The panels themselves are yours: remove them from panel edit mode.
@@ -224,7 +242,7 @@ The panels themselves are yours: remove them from panel edit mode.
 
 - [4v3ngR/kwin-effects-glass](https://github.com/4v3ngR/kwin-effects-glass) — the Glass effect
 - [luisbocanegra/plasma-panel-colorizer](https://github.com/luisbocanegra/plasma-panel-colorizer)
-- [vinceliuice/WhiteSur-kde](https://github.com/vinceliuice/WhiteSur-kde) — the dock's shape and task indicators (GPL-3.0)
+- [vinceliuice/WhiteSur-kde](https://github.com/vinceliuice/WhiteSur-kde) — the dock's shape, the task indicators, the popup background (GPL-3.0)
 
 ## License
 
