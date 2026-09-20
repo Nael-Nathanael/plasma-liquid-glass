@@ -1,0 +1,31 @@
+{
+  "globalSettings": {
+    "configurationOverrides": {
+      "overrides": {},
+      "associations": []
+    },
+    "panel": {
+      "normal": {
+        "enabled": true,
+        "blurBehind": true,
+        "backgroundColor": { "enabled": true, "sourceType": 0, "custom": "#000000", "alpha": 0.18 },
+        "radius": { "enabled": true, "corner": { "topLeft": 22, "topRight": 22, "bottomRight": 22, "bottomLeft": 22 } },
+        "margin": { "enabled": true, "side": { "left": 0, "right": 0, "top": 0, "bottom": 0 } },
+        "padding": { "enabled": true, "side": { "left": 8, "right": 8, "top": 0, "bottom": 0 } },
+        "border": { "enabled": false, "width": 0 },
+        "borderSecondary": { "enabled": false, "width": 0 },
+        "shadow": { "background": { "enabled": false }, "foreground": { "enabled": false } }
+      }
+    },
+    "widgets": {
+      "normal": { "enabled": false }
+    },
+    "trayWidgets": {
+      "normal": { "enabled": false }
+    },
+    "stockPanelSettings": {},
+    "nativePanel": {
+      "background": { "enabled": true, "opacity": 0, "shadow": false }
+    }
+  }
+}

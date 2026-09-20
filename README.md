@@ -23,8 +23,9 @@ Tested on Plasma 6.6.6, Wayland, display scale 2 and 2.5.
 | --- | --- |
 | [Panel Colorizer](https://github.com/luisbocanegra/plasma-panel-colorizer) | Cuts the panel into pills and tells KWin which areas to blur |
 | [kwin-effects-glass, `per-pill-glass` branch](https://github.com/Nael-Nathanael/kwin-effects-glass/tree/per-pill-glass) | Draws the glass: bend, rim, blur |
-| `presets/` | Panel Colorizer presets: `Bubbles` (pills) and `Bar` (maximized) |
+| `presets/` | Panel Colorizer presets: `Bubbles` (pills), `Bar` (maximized), `Dock` (one slab) |
 | `setup-panel.sh` | Builds the top bar, sets the clock, wires preset auto-loading. `--dock` adds a dock |
+| [WhiteSur](https://github.com/vinceliuice/WhiteSur-kde), one file | The dock's running-app dot and rounded highlight. Fetched by `--dock`, not bundled |
 | `glass-settings.sh` | The Glass effect settings |
 
 The fork is needed. Upstream draws one glass shape around the whole panel, so
@@ -71,6 +72,11 @@ Do these in order.
    sets auto-loading: *Maximized window* → `Bar`, *Normal* → `Bubbles`. It sets
    the clock to one line, `20 Sep 12:24`. Safe to run again.
 
+   `--dock` adds a bottom panel shaped like the WhiteSur one: as wide as its
+   icons, centered, floating, moves out of a window's way. It gets the `Dock`
+   preset, the same glass as the pills but as one slab. Your pinned apps are set
+   once, when the dock is made, and left alone after that.
+
    By hand instead: add the Panel Colorizer widget to the panel, then in its
    settings load `Bubbles` and set the same auto-loading.
 
@@ -86,6 +92,23 @@ Glass needs the wallpaper behind the pills, not a panel fill.
 `Bar` is the opposite: the panel's own background, and text in the system text
 colour. So it reads on a light theme and on a dark one. `Bubbles` keeps white
 text, because it sits on the wallpaper, not on the theme.
+
+### What `--dock` changes outside the panel
+
+Plasma draws the square highlight behind the active app from the Plasma style,
+and a style is global. `--dock` makes a style named `WhiteSur Dock` with one file
+in it, WhiteSur's `tasks.svgz`, and switches to it. Plasma takes every file a
+style does not have from Breeze, so the dot and the rounded highlight are the
+only things that change. It needs `curl` and a network connection, once.
+
+The dot is dark on a light colour scheme and light on a dark one. To force it:
+`DOCK_VARIANT=WhiteSurLiquid-dark sh plasma-liquid-glass/setup-panel.sh --dock`.
+
+### Taking Panel Colorizer off a panel
+
+Remove the widget, then restart the shell: `systemctl --user restart
+plasma-plasmashell`. Panel Colorizer restyles the panel's items in place, and its
+pills stay painted until the shell starts again.
 
 ### The clock is the wrong size
 
@@ -143,10 +166,20 @@ qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.unloadEffect glass
 qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.loadEffect blur
 ```
 
+If you used `--dock`, go back to the Breeze style too:
+
+```
+plasma-apply-desktoptheme default
+rm -r ~/.local/share/plasma/desktoptheme/WhiteSurDock
+```
+
+The panels themselves are yours: remove them from panel edit mode.
+
 ## Credits
 
 - [4v3ngR/kwin-effects-glass](https://github.com/4v3ngR/kwin-effects-glass) — the Glass effect
 - [luisbocanegra/plasma-panel-colorizer](https://github.com/luisbocanegra/plasma-panel-colorizer)
+- [vinceliuice/WhiteSur-kde](https://github.com/vinceliuice/WhiteSur-kde) — the dock's shape and task indicators (GPL-3.0)
 
 ## License
 
