@@ -158,9 +158,13 @@ changes. It needs `curl` and a network connection.
 WhiteSur's popup background is clear glass, and text on clear glass is hard to
 read over a dark window. So `--popups` also sets a milky `TintColor` in the Glass
 effect, with `ExcludeDocks` so the pills and the dock stay clear. A style cannot
-tell a notification from a tray popup, so both change. What stays Plasma's: the
-strip with the app name, the timeout line, the icon on the right. Those are the
-notification widget's layout, not the style.
+tell a notification from a tray popup, so both change. It also turns off the
+coloured timeout line, which is a Plasma setting (`ShowPopupTimeout`).
+
+What stays Plasma's: the strip with the app name, and the icon on the right.
+Those are the notification widget's layout, not the style, and the widget's QML
+is compiled into `org.kde.plasma.notifications.so`. Changing them means building
+a fork of that widget from the plasma-workspace source, for every Plasma update.
 
 Light or dark follows your colour scheme. To force it:
 `WHITESUR_VARIANT=WhiteSurLiquid-dark sh plasma-liquid-glass/setup-panel.sh --dock --popups`.
@@ -234,6 +238,7 @@ plasma-apply-desktoptheme default
 rm -r ~/.local/share/plasma/desktoptheme/WhiteSurParts
 kwriteconfig6 --file kwinrc --group Effect-blurplus --key TintColor --delete
 kwriteconfig6 --file kwinrc --group Effect-blurplus --key ExcludeDocks --delete
+kwriteconfig6 --notify --file plasmanotifyrc --group Notifications --key ShowPopupTimeout true
 ```
 
 The panels themselves are yours: remove them from panel edit mode.

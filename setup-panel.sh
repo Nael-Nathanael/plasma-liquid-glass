@@ -90,7 +90,9 @@ if $POPUPS; then
     $dark && tint='#a61e1e1e'
     kwriteconfig6 --file kwinrc --group Effect-blurplus --key TintColor "$tint"
     kwriteconfig6 --file kwinrc --group Effect-blurplus --key ExcludeDocks true
-    kwriteconfig6 --file plasmanotifyrc --group Notifications --key PopupPosition TopRight
+    # --notify: the running shell only re-reads these when told a value changed.
+    kwriteconfig6 --notify --file plasmanotifyrc --group Notifications --key PopupPosition TopRight
+    kwriteconfig6 --notify --file plasmanotifyrc --group Notifications --key ShowPopupTimeout false
     "$qdbus" org.kde.KWin /Effects org.kde.kwin.Effects.reconfigureEffect glass >/dev/null 2>&1 || true
 fi
 
