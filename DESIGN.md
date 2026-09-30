@@ -1,7 +1,8 @@
 ---
 version: 1.0
 name: Liquid Glass
-description: A definition of the "liquid glass" material for people and language models who have to build it. Frosted glass blurs and tints what is behind it. Liquid glass is a thin lens: a clear, flat centre where content passes through almost untouched, and a narrow curved rim where the background is refracted (displaced, magnified, colour-split) and a specular highlight catches the light. The whole look lives in the last few pixels at the edge. Built and verified on a KDE Plasma 6 top bar; the model is platform-neutral.
+description: >-
+  A definition of the "liquid glass" material for people and language models who have to build it. Frosted glass blurs and tints what is behind it. Liquid glass is a thin lens: a clear, flat centre where content passes through almost untouched, and a narrow curved rim where the background is refracted (displaced, magnified, colour-split) and a specular highlight catches the light. The whole look lives in the last few pixels at the edge. Built and verified on a KDE Plasma 6 top bar; the model is platform-neutral.
 
 material:
   centre:
