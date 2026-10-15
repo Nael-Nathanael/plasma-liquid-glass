@@ -17,6 +17,13 @@ Needs `sudo` once, for the effect. Undo is four commands, at the bottom.
 
 Tested on Plasma 6.6.6, Wayland, display scale 2 and 2.5.
 
+## What liquid glass is
+
+[DESIGN.md](DESIGN.md) defines the material: the optics, the numbers that
+worked and their limits, the tests that prove it is drawing, and the eight
+wrong turns it took to get here. Written for people and for language models.
+Point your AI at it before asking for "liquid glass".
+
 ## Parts
 
 | Part | Job |
